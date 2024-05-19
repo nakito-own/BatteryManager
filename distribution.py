@@ -1,8 +1,12 @@
-class Distribution:
+from _datetime import datetime
+from robot import Robot
+from address import Address
 
-    
+
+class Distribution:
     def __init__(self):
         self.locations = {}
+        self.creation_date = datetime.now()
 
     def add_robot_location(self, robot_id, location):
         if location not in self.locations:
