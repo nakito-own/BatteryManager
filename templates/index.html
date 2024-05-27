@@ -4,10 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Text for Routes and Distribution</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('myForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const routesText = document.getElementById('routes_text').value;
+                const distributionText = document.getElementById('distribution_text').value;
+
+                fetch('/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        routes_text: routesText,
+                        distribution_text: distributionText
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('routes_output').innerText = data.routes_output;
+                    document.getElementById('distribution_output').innerText = data.distribution_output;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>Enter Routes and Distribution Text</h1>
-    <form method="post">
+    <form id="myForm">
         <label for="routes_text">Routes Text:</label><br>
         <textarea id="routes_text" name="routes_text" rows="10" cols="50" required></textarea><br><br>
 
@@ -16,14 +43,10 @@
 
         <button type="submit">Submit</button>
     </form>
-    {% if routes_output %}
     <h2>Routes Output:</h2>
-    <pre>{{ routes_output }}</pre>
-    {% endif %}
+    <pre id="routes_output"></pre>
 
-    {% if distribution_output %}
     <h2>Distribution Output:</h2>
-    <pre>{{ distribution_output }}</pre>
-    {% endif %}
+    <pre id="distribution_output"></pre>
 </body>
 </html>
