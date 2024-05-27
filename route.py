@@ -9,7 +9,8 @@ class Route:
         self.addresses.append(address)
 
     def __repr__(self):
-        return f"Route {self.route_number}: {self.addresses}"
+        addresses_str = "\n  ".join(str(address) for address in self.addresses)
+        return f"Route {self.route_number}:\n  {addresses_str}"
 
     @classmethod
     def from_file(cls, file_path):
@@ -26,9 +27,23 @@ class Route:
                     routes.append(current_route)
 
                 elif line and current_route:
-                    # Extracting the address part after the time range
-                    address = line.split(") - ", 1)[1]
+                    # Извлечение основной и дополнительной части адреса
+                    address_part = line.split(") - ", 1)[1]
+                    if '(' in address_part:
+                        main_address, second_address = address_part.split('(', 1)
+                        main_address = main_address.strip()
+                        second_address = second_address.rstrip(')').strip()
+                    else:
+                        main_address = address_part.strip()
+                        second_address = ''
+
+                    address = Address(main_address, second_address)
                     current_route.add_address(address)
 
         return routes
 
+if __name__ == "__main__":
+    routes = Route.from_file('routes.txt')
+
+    for route in routes:
+        print(route)

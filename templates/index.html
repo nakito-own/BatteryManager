@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Text for Routes and Distribution</title>
+</head>
+<body>
+    <h1>Enter Routes and Distribution Text</h1>
+    <form method="post">
+        <label for="routes_text">Routes Text:</label><br>
+        <textarea id="routes_text" name="routes_text" rows="10" cols="50" required></textarea><br><br>
+
+        <label for="distribution_text">Distribution Text:</label><br>
+        <textarea id="distribution_text" name="distribution_text" rows="10" cols="50" required></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    {% if routes_output %}
+    <h2>Routes Output:</h2>
+    <pre>{{ routes_output }}</pre>
+    {% endif %}
+
+    {% if distribution_output %}
+    <h2>Distribution Output:</h2>
+    <pre>{{ distribution_output }}</pre>
+    {% endif %}
+</body>
+</html>
