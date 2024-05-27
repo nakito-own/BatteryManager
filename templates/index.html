@@ -6,11 +6,12 @@
     <title>Input Text for Routes and Distribution</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('myForm').addEventListener('submit', function(event) {
-                event.preventDefault();
+            const routesTextArea = document.getElementById('routes_text');
+            const distributionTextArea = document.getElementById('distribution_text');
 
-                const routesText = document.getElementById('routes_text').value;
-                const distributionText = document.getElementById('distribution_text').value;
+            function sendData() {
+                const routesText = routesTextArea.value;
+                const distributionText = distributionTextArea.value;
 
                 fetch('/process', {
                     method: 'POST',
@@ -28,20 +29,21 @@
                     document.getElementById('distribution_output').innerText = data.distribution_output;
                 })
                 .catch(error => console.error('Error:', error));
-            });
+            }
+
+            routesTextArea.addEventListener('input', sendData);
+            distributionTextArea.addEventListener('input', sendData);
         });
     </script>
 </head>
 <body>
     <h1>Enter Routes and Distribution Text</h1>
-    <form id="myForm">
+    <form id="myForm" onsubmit="return false;">
         <label for="routes_text">Routes Text:</label><br>
         <textarea id="routes_text" name="routes_text" rows="10" cols="50" required></textarea><br><br>
 
         <label for="distribution_text">Distribution Text:</label><br>
         <textarea id="distribution_text" name="distribution_text" rows="10" cols="50" required></textarea><br><br>
-
-        <button type="submit">Submit</button>
     </form>
     <h2>Routes Output:</h2>
     <pre id="routes_output"></pre>
