@@ -1,21 +1,12 @@
 from flask import Flask, request, render_template, jsonify
 from route import Route
+from distribution import Distribution  # Импортируем ваш класс Distribution
 
 app = Flask(__name__)
-
-
-class Distribution:
-    def __init__(self, content):
-        self.content = content
-
-    def __repr__(self):
-        return f"Distribution:\n{self.content}"
-
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
-
 
 @app.route('/process', methods=['POST'])
 def process():
@@ -35,13 +26,15 @@ def process():
     # Обработка распределения
     distribution_text = request.json.get('distribution_text', None)
     if distribution_text:
-        distribution = Distribution(distribution_text)
+        distribution_file_path = 'distribution_input.txt'
+        with open(distribution_file_path, 'w', encoding='utf-8') as file:
+            file.write(distribution_text)
+        distribution = Distribution.from_file(distribution_file_path)
         response['distribution_output'] = str(distribution)
     else:
         response['distribution_output'] = "No distribution text provided."
 
     return jsonify(response)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
