@@ -1,8 +1,10 @@
 from flask import Flask, request, render_template, jsonify
+from flask_cors import CORS
 from route import Route
-from distribution import Distribution  # Импортируем ваш класс Distribution
+from distribution import Distribution
 
 app = Flask(__name__)
+CORS(app)  # Добавляем поддержку CORS
 
 @app.route('/', methods=['GET'])
 def index():
@@ -37,4 +39,4 @@ def process():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='192.168.1.3', port=5000, debug=True)
