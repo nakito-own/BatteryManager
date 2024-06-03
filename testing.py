@@ -1,2 +1,8 @@
+from address import Address
+from route import Route
 
-print(int('a344'[1:]))
+routes = Route.from_file('routes.txt')
+
+for route in routes:
+    print(route)
+

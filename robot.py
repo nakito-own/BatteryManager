@@ -8,13 +8,13 @@ class Robot:
     gen = ''
 
     def __init__(self, name, actual_location, garage_status, gen):
+        self.gen = gen
+        self.garage_status = garage_status
         self.name = name
         self.actual_location = actual_location
-        self.garage_status = garage_status
-        self.gen = gen
 
     def __str__(self):
-        return f"Name: {self.name}, Location: {self.actual_location}, Garage status: {'в гараже' if self.garage_status else 'не в гараже'}, Generation: {'new' if int(self.name[1:]) > 390 else 'old'}"
+        return f"Name: {self.name}, Location: {self.actual_location}, Garage status: {'True' if self.garage_status else 'False'}, Generation: {'new' if int(self.name[1:]) > 390 else 'old'}"
 
     def get_name(self):
         return self.name
@@ -26,4 +26,4 @@ class Robot:
         return self.gen
 
     def get_info(self):
-        return self.name, self.garage_status, self.gen
+        return f"Name: {self.name}, Location: {self.actual_location}, Garage status: {self.garage_status}, Generation: {self.gen}"

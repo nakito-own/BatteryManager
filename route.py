@@ -1,6 +1,5 @@
 from address import Address
 
-
 class Route:
     def __init__(self, route_number):
         self.route_number = route_number
@@ -43,9 +42,9 @@ class Route:
 
         return routes
 
-
 if __name__ == "__main__":
     routes = Route.from_file('routes.txt')
 
     for route in routes:
         print(route)
+
