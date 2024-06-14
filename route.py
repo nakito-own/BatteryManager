@@ -27,24 +27,23 @@ class Route:
                     routes.append(current_route)
 
                 elif line and current_route:
-                    # Извлечение основной и дополнительной части адреса
-                    address_part = line.split(") - ", 1)[1]
-                    if '(' in address_part:
-                        main_address, second_address = address_part.split('(', 1)
-                        main_address = main_address.strip()
-                        second_address = second_address.rstrip(')').strip()
-                    else:
-                        main_address = address_part.strip()
-                        second_address = ''
+                    parts = line.split(") - ", 1)
+                    if len(parts) == 2:
+                        address_part = parts[1]
+                        if '(' in address_part:
+                            main_address, second_address = address_part.split('(', 1)
+                            main_address = main_address.strip()
+                            second_address = second_address.rstrip(')').strip()
+                        else:
+                            main_address = address_part.strip()
+                            second_address = ''
 
-                    address = Address(main_address, second_address)
-                    current_route.add_address(address)
+                        address = Address(main_address, second_address)
+                        current_route.add_address(address)
 
         return routes
 
 if __name__ == "__main__":
     routes = Route.from_file('routes.txt')
 
-    for route in routes:
-        print(route)
-
+    print(routes)
