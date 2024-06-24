@@ -13,6 +13,7 @@ class Address:
     def __iter__(self):
         return iter(self.points)
 
+
     @classmethod
     def parsing_point(cls, address_string):
         if address_string.startswith("•"):

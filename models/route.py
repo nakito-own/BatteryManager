@@ -1,4 +1,4 @@
-from address import Address
+from models.address import Address
 
 class Route:
     def __init__(self, route_number):
@@ -35,7 +35,7 @@ class Route:
         return routes
 
 if __name__ == "__main__":
-    routes = Route.from_file('routes.txt')
+    routes = Route.from_file('../input-files/routes.txt')
     for route in routes:
         for address in route:
             print("Route number", route.route_number, ", Address",address)

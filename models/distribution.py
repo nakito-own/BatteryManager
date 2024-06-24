@@ -1,10 +1,11 @@
-from robot import Robot
-from address import Address
-from route import Route
+from models.robot import Robot
+from models.address import Address
+from models.route import Route
 
 
 class Distribution:
     def __init__(self):
+        self.robots = None
         self.assignments = []
 
     def add_assignment(self, robot):
@@ -35,6 +36,7 @@ class Distribution:
         return distribution
 
     def find_robot_by_address(self, address):
+
         found_robots = []
         addresses = address
         for found_location in addresses:
@@ -47,9 +49,9 @@ class Distribution:
 
 
 if __name__ == "__main__":
-    distribution = Distribution.from_file("distribution.txt")
-    routes = Route.from_file('routes.txt')
+    distribution = Distribution.from_file("input-files/distribution.txt")
+    routes = Route.from_file('input-files/routes.txt')
 
     print(distribution)
 
-    print(distribution.find_robot_by_address(Address(['Метро Раменки', 'Мичуринский проспект, 34'])))
+    print(distribution.find_robot_by_address(Address(['Лесная, 5'])))
