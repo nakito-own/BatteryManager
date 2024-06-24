@@ -1,13 +1,29 @@
+import re
+
 class Address:
-    def __init__(self, main_address, second_address=''):
-        self.main_address = main_address.strip()
-        self.second_address = second_address.strip()
+    def __init__(self, points):
+        self.points = points
 
-    def get_main_address(self):
-        return self.main_address
-
-    def get_second_address(self):
-        return self.second_address
+    def get_addresses(self):
+        return self.points
 
     def __repr__(self):
-        return f"Main address: {self.main_address}, Second address: {self.second_address}"
+        return f"Addresses: {self.points}"
+
+    def __iter__(self):
+        return iter(self.points)
+
+    @classmethod
+    def parsing_point(cls, address_string):
+        if address_string.startswith("•"):
+            points = [address_string.split("storage: ")[1].strip()]
+        else:
+            match = re.search(r'\) - (.*)', address_string)
+            if match:
+                address_part = match.group(1)
+                addresses = re.split(r'\(|\)', address_part)
+                points = [address.strip() for address in addresses if address.strip()]
+            else:
+                points = []
+
+        return cls(points)

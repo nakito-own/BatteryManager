@@ -12,6 +12,9 @@ class Route:
         addresses_str = "\n  ".join(str(address) for address in self.addresses)
         return f"Route {self.route_number}:\n  {addresses_str}"
 
+    def __iter__(self):
+        return iter(self.addresses)
+
     @classmethod
     def from_file(cls, file_path):
         routes = []
@@ -27,23 +30,12 @@ class Route:
                     routes.append(current_route)
 
                 elif line and current_route:
-                    parts = line.split(") - ", 1)
-                    if len(parts) == 2:
-                        address_part = parts[1]
-                        if '(' in address_part:
-                            main_address, second_address = address_part.split('(', 1)
-                            main_address = main_address.strip()
-                            second_address = second_address.rstrip(')').strip()
-                        else:
-                            main_address = address_part.strip()
-                            second_address = ''
-
-                        address = Address(main_address, second_address)
-                        current_route.add_address(address)
+                    current_route.add_address(Address.parsing_point(line))
 
         return routes
 
 if __name__ == "__main__":
     routes = Route.from_file('routes.txt')
-
-    print(routes)
+    for route in routes:
+        for address in route:
+            print("Route number", route.route_number, ", Address",address)

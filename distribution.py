@@ -1,15 +1,20 @@
 from robot import Robot
 from address import Address
 from route import Route
+
+
 class Distribution:
     def __init__(self):
         self.assignments = []
 
-    def add_assignment(self, robot, address):
-        self.assignments.append((robot, address))
+    def add_assignment(self, robot):
+        self.assignments.append((robot))
 
     def __str__(self):
-        return "\n".join([f"{robot} - {address}" for robot, address in self.assignments])
+        return "\n".join([f"{robot}" for robot in self.assignments])
+
+    def __repr__(self):
+        return f"{self.robots}"
 
     @classmethod
     def from_file(cls, file_path):
@@ -18,38 +23,33 @@ class Distribution:
             for line in file:
                 line = line.strip()
                 if line.startswith("•"):
-                    parts = line.split(", storage: ")
+                    parts = line.split(",")
                     name = parts[0].strip().split(" ")[1]
-                    storage_info = parts[1].strip()
-                    garage_status = "гараж" in storage_info
+                    garage_status = "гараж" in line
                     gen = 'new' if int(name[1:]) > 390 else 'old'
-                    address = Address(storage_info)
+
+                    address = Address.parsing_point(line)
+
                     robot = Robot(name, address, garage_status, gen)
-                    distribution.add_assignment(robot, address)
+                    distribution.add_assignment(robot)
         return distribution
 
     def find_robot_by_address(self, address):
-        if not isinstance(address, Address):
-            raise TypeError("Argument must be an instance of Address")
+        found_robots = []
+        addresses = address
+        for found_location in addresses:
+            for robot in self.assignments:
+                robot_location = Address.get_addresses(robot.get_actual_location())[0]
+                if robot_location == found_location:
+                    found_robots.append(robot)
 
-        found_robots = [
-            robot for robot, addr in self.assignments
-            if (addr.get_main_address() == address.get_main_address() or
-                addr.get_main_address() == address.get_second_address())
-        ]
         return found_robots
+
 
 if __name__ == "__main__":
     distribution = Distribution.from_file("distribution.txt")
     routes = Route.from_file('routes.txt')
 
-    for route in routes:
-        for address in route:
-            print(distribution.find_robot_by_address(address))
     print(distribution)
 
-    main_address = "Лавка на Смоленском"
-    search_address = Address(main_address)
-    robots_at_address = distribution.find_robot_by_address(search_address)
-    for robot in robots_at_address:
-        print(robot)
+    print(distribution.find_robot_by_address(Address(['Метро Раменки', 'Мичуринский проспект, 34'])))

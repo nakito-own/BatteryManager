@@ -16,6 +16,9 @@ class Robot:
     def __str__(self):
         return f"Name: {self.name}, Location: {self.actual_location}, Garage status: {'True' if self.garage_status else 'False'}, Generation: {'new' if int(self.name[1:]) > 390 else 'old'}"
 
+    def __repr__(self):
+        return f"Name: {self.name}, Location: {self.actual_location}, Garage status: {'True' if self.garage_status else 'False'}, Generation: {'new' if int(self.name[1:]) > 390 else 'old'}"
+
     def get_name(self):
         return self.name
 
